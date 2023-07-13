@@ -4,6 +4,10 @@
 #include <CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Constrained_placement.h>
 #include <CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Midpoint_placement.h>
 #include <CGAL/Surface_mesh_simplification/Policies/Edge_collapse/Count_ratio_stop_predicate.h>
+
+#include <CGAL/Polygon_mesh_processing/manifoldness.h>
+#include <CGAL/Polygon_mesh_processing/repair.h>
+
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -47,6 +51,8 @@ int main(int argc, char** argv)
     return EXIT_FAILURE;
   }
 
+  CGAL::Polygon_mesh_processing::duplicate_non_manifold_vertices( surface_mesh );
+  CGAL::Polygon_mesh_processing::remove_isolated_vertices( surface_mesh	);
       
   Surface_mesh::Property_map<halfedge_descriptor, std::pair<Point_3, Point_3> > constrained_halfedges;
   constrained_halfedges = surface_mesh.add_property_map<halfedge_descriptor,std::pair<Point_3, Point_3> >("h:vertices").first;
